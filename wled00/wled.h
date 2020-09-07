@@ -47,6 +47,7 @@
   #include <ESP8266WiFi.h>
   #include <ESP8266mDNS.h>
   #include <ESPAsyncTCP.h>
+  #include <ESP8266HTTPClient.h>
   extern "C"
   {
   #include <user_interface.h>

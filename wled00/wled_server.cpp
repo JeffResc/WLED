@@ -109,6 +109,21 @@ void initServer()
     serveJson(request);
   });
 
+  server.on("/auto_ota", HTTP_GET, [](AsyncWebServerRequest *request){
+    WiFiClient client;
+
+    if (!client.connect("x.x.x.x", 3000)) {
+      Serial.println("connection failed");
+      return;
+    }
+
+    client.print(String("GET ") + "/downloads HTTP/1.1\r\n" + "Host: x.x.x.x\r\n" + "Connection: close\r\n\r\n");
+
+    Serial.println(doc["esp32_bootloader.bin"].as<char*>());
+
+    client.stop();
+  });
+
   AsyncCallbackJsonWebHandler* handler = new AsyncCallbackJsonWebHandler("/json", [](AsyncWebServerRequest *request) {
     bool verboseResponse = false;
     { //scope JsonDocument so it releases its buffer
