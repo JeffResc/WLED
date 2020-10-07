@@ -51,9 +51,7 @@ void WS2812FX::init(bool supportWhite, uint16_t countPixels, bool skipFirst)
   _useRgbw = supportWhite;
   _length = countPixels;
   _skipFirstMode = skipFirst;
-
-  uint8_t ty = 1;
-  if (supportWhite) ty = 2;
+  uint8_t ty = supportWhite ? 2 : 1;
   _lengthRaw = _length;
   if (_skipFirstMode) {
     _lengthRaw += LED_SKIP_AMOUNT;
@@ -396,6 +394,13 @@ void WS2812FX::setBrightness(uint8_t b) {
     {
       _segments[i].setOption(SEG_OPTION_FREEZE, false);
     }
+    //delete bus;
+    pinMode(LEDPIN, OUTPUT);
+    digitalWrite(LEDPIN, HIGH);
+  } else {
+    digitalWrite(LEDPIN, LOW);
+    const uint8_t ty = _useRgbw ? 2 : 1;
+    bus->Begin((NeoPixelType)ty, _lengthRaw);
   }
   if (SEGENV.next_time > millis() + 22 && millis() - _lastShow > MIN_SHOW_DELAY) show();//apply brightness change immediately if no refresh soon
 }
