@@ -534,15 +534,15 @@ void WLED::handleStatusLED()
           ledStatusErrorMessage = "Phillips Hue JSON Parsing Error";
           ledStatusType = 2;
           break;
-        case 1:
+        case HUE_ERROR_UNAUTHORIZED:
           ledStatusErrorMessage = "Phillips Hue Authentication Error";
           ledStatusType = 2;
           break;
-        case 3:
+        case HUE_ERROR_LIGHTID:
           ledStatusErrorMessage = "Phillips Invalid Light ID Error";
           ledStatusType = 2;
           break;
-        case 101:
+        case HUE_ERROR_PUSHLINK:
           ledStatusErrorMessage = "Phillips Hue Link Button Not Presset Error";
           ledStatusType = 2;
           break;
