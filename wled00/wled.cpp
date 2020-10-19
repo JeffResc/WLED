@@ -523,6 +523,40 @@ void WLED::handleStatusLED()
       ledStatusErrorMessage = WLED_MQTT_CONNECTED ? "OK" : "Unable to connect to MQTT.";
     }
 
+    // Check Hue connection
+    if (ledStatusType != 1) {
+      switch (hueError) {
+        case HUE_ERROR_TIMEOUT:
+          ledStatusErrorMessage = "Phillips Hue Timeout Error";
+          ledStatusType = 2;
+          break;
+        case HUE_ERROR_JSON_PARSING:
+          ledStatusErrorMessage = "Phillips Hue JSON Parsing Error";
+          ledStatusType = 2;
+          break;
+        case 1:
+          ledStatusErrorMessage = "Phillips Hue Authentication Error";
+          ledStatusType = 2;
+          break;
+        case 3:
+          ledStatusErrorMessage = "Phillips Invalid Light ID Error";
+          ledStatusType = 2;
+          break;
+        case 101:
+          ledStatusErrorMessage = "Phillips Hue Link Button Not Presset Error";
+          ledStatusType = 2;
+          break;
+        case HUE_ERROR_ACTIVE:
+          ledStatusErrorMessage = "OK";
+          ledStatusType = 0;
+          break;
+        case HUE_ERROR_INACTIVE:
+          ledStatusErrorMessage = "OK";
+          ledStatusType = 0;
+          break;
+      }
+    }
+
     // Activate LED or Pixel based on connections
     if (ledStatusType) {
       if (millis() - ledStatusLastMillis >= (1000/ledStatusType)) {
